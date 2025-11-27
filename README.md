@@ -1,49 +1,52 @@
-# Origin-Core
+# Origin-Core Architecture
 
-A minimal modular PHP skeleton based on a **"Universe" architecture**.
-
-Each "universe" (user, env, trace, …) owns its own routes, controllers and
-services, while sharing a tiny core (router, session, i18n).
-
-This repository started as the internal core for the
-[TGTRACING](https://tgtracing.com/) project and was later extracted as a
-stand-alone open-source foundation.
-
----
+A minimal, modular PHP skeleton built around the **Universe Architecture**.  
+This repo is the clean core used behind the TGTRACING project, extracted and simplified for public use and learning.
 
 ## Features
 
-- Very small, framework-agnostic core
-- Simple router that discovers universes dynamically
-- Each universe maps to its own folder:
-  - `core/universe/user`
-  - `core/universe/env`
-  - `core/universe/trace` (future)
-- Plain PHP pages under `pages/` (no templating engine required)
-- Ready to be embedded into existing legacy projects
+- 🧩 **Universe Architecture**
+  - `user`, `trace`, `env` universes separated by folders
+  - Each universe has its own `routes`, `controller`, `service`, `views`
+- 🧠 **Central router**
+  - All HTTP requests go through `core/router.php`
+  - Universes only register their routes and handlers
+- 🌍 **Simple i18n hook**
+  - Global i18n loader in `core/i18n.php`
+  - Ready to mount real translation files later
+- 🧪 **Tiny demo pages**
+  - `/?p=home` – core home page
+  - `/?p=user_hello` – demo from User universe
+  - `/?p=user_login` – demo login page
+  - `/?p=env_hello` – demo from Env universe
+  - `/?p=env_admin` – demo env admin entry
 
----
-
-## Folder structure
+## Directory structure
 
 ```text
 core/
-  bootstrap.php   # loads session, helpers, i18n, router
-  router.php      # central dispatcher
-  helpers.php     # small helper functions
-  session.php     # session bootstrap
-  i18n.php        # stub for future localization
+  bootstrap.php      # Entry bootstrap
+  router.php         # Central router
+  helpers.php        # Common helpers
+  i18n.php           # i18n loader (global)
+  session.php        # Session wrapper
   universe/
     user/
-      controller/UserController.php
-      routes/routes.php
+      routes/        # user/routes/routes.php
+      controller/
+      service/
+      views/
+    trace/
+      ...
     env/
-      controller/EnvController.php
-      routes/routes.php
-
+      ...
 pages/
-  home.php
-  user/login.php
-  env/admin.php
-
-index.php
+  home.php           # Home demo
+  user/login.php     # User login demo
+  env/admin.php      # Env admin demo
+docs/
+  whitepaper.md      # (optional) design notes
+i18n/
+  en.json
+  zh-CN.json
+index.php            # Front controller
